@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Acción — Simoné</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-oscuro: #1c3a10;
+    --verde: #2d5a1b;
+    --verde-claro: #b8d46a;
+    --crema: #f5f0e8;
+    --crema-oscura: #ede8dc;
+    --texto: #1a1a1a;
+    --gris: #6b7280;
+    --blanco: #ffffff;
+    --a1: #3b82f6;   /* acción 1 */
+    --a2: #f97316;   /* acción 2 */
+    --a3: #8b5cf6;   /* acción 3 */
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--crema);
+    color: var(--texto);
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--verde-oscuro), var(--verde));
+    color: white;
+    padding: 32px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content:''; position:absolute; top:-50px; right:-50px;
+    width:200px; height:200px; border-radius:50%;
+    background:rgba(184,212,106,0.1);
+  }
+  .header-top {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:16px; position:relative; z-index:1;
+  }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand-dot { width:9px; height:9px; border-radius:50%; background:var(--verde-claro); }
+  .brand-name { font-family:'Playfair Display',serif; font-size:15px; color:rgba(255,255,255,0.85); }
+  .header-badges { display:flex; gap:8px; flex-wrap:wrap; }
+  .badge {
+    padding:4px 12px; border-radius:20px; font-size:11px; font-weight:600;
+    border:1px solid rgba(184,212,106,0.4); color:var(--verde-claro);
+    background:rgba(184,212,106,0.15);
+  }
+  .header-content { position:relative; z-index:1; }
+  .header-content h1 {
+    font-family:'Playfair Display',serif; font-size:30px; font-weight:700;
+    margin-bottom:6px;
+  }
+  .header-content p { color:rgba(255,255,255,0.65); font-size:13px; }
+
+  /* ── PROGRESS BAR GLOBAL ── */
+  .progress-bar-global {
+    background: var(--verde-oscuro);
+    padding: 16px 40px;
+    display:flex; align-items:center; gap:16px;
+    border-bottom: 1px solid rgba(184,212,106,0.2);
+  }
+  .prog-label { color:rgba(255,255,255,0.6); font-size:12px; white-space:nowrap; }
+  .prog-track {
+    flex:1; height:8px; background:rgba(255,255,255,0.1);
+    border-radius:10px; overflow:hidden;
+  }
+  .prog-fill {
+    height:100%; background: var(--verde-claro);
+    border-radius:10px; transition: width 0.4s ease;
+  }
+  .prog-pct { color:var(--verde-claro); font-size:13px; font-weight:700; white-space:nowrap; min-width:36px; text-align:right; }
+
+  /* ── SAVE INDICATOR ── */
+  .save-indicator {
+    background: var(--verde-oscuro);
+    padding: 10px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .save-badge {
+    display:flex; align-items:center; gap:6px;
+    font-size:11px; color:rgba(255,255,255,0.5);
+  }
+  .save-dot { width:6px; height:6px; border-radius:50%; background:#94a3b8; }
+  .save-dot.saved { background:var(--verde-claro); }
+  .btn-reiniciar {
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+    color:rgba(255,255,255,0.5); padding:5px 14px; border-radius:6px;
+    font-size:11px; cursor:pointer; font-family:'Inter',sans-serif;
+    transition:all 0.2s;
+  }
+  .btn-reiniciar:hover { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); color:#fca5a5; }
+
+  /* ── MAIN ── */
+  .main { max-width:960px; margin:0 auto; padding:36px 28px 80px; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; gap:0; margin-bottom:28px; border-bottom:2px solid var(--crema-oscura); }
+  .tab-btn {
+    padding:10px 20px; background:none; border:none; border-bottom:3px solid transparent;
+    font-size:13px; font-weight:500; color:var(--gris); cursor:pointer;
+    font-family:'Inter',sans-serif; transition:all 0.2s; margin-bottom:-2px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .tab-btn:hover { color:var(--texto); }
+  .tab-btn.active { color:var(--verde-oscuro); border-bottom-color:var(--verde-oscuro); font-weight:600; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  /* ── ACCIÓN CARD ── */
+  .accion-card {
+    background:white; border-radius:16px;
+    border:1px solid rgba(0,0,0,0.07);
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    overflow:hidden; margin-bottom:20px;
+  }
+  .accion-header {
+    padding:20px 24px 16px;
+    display:flex; align-items:flex-start; gap:16px;
+    border-bottom:1px solid var(--crema-oscura);
+  }
+  .accion-num {
+    width:36px; height:36px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; font-weight:700; color:white; flex-shrink:0;
+  }
+  .accion-info { flex:1; }
+  .accion-title {
+    font-family:'Playfair Display',serif;
+    font-size:17px; font-weight:600;
+    color:var(--verde-oscuro); margin-bottom:4px;
+  }
+  .accion-desc { font-size:12px; color:var(--gris); line-height:1.5; }
+  .accion-status-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .status-select {
+    padding:5px 10px; border-radius:8px; font-size:11px; font-weight:600;
+    border:1px solid var(--crema-oscura); cursor:pointer;
+    font-family:'Inter',sans-serif; background:var(--crema);
+  }
+  .accion-progress-mini {
+    height:5px; width:120px; background:var(--crema-oscura); border-radius:10px; overflow:hidden;
+  }
+  .accion-progress-fill { height:100%; border-radius:10px; transition:width 0.3s; }
+
+  /* ── SUBTAREAS ── */
+  .subtareas { padding:16px 24px 4px; }
+  .subtarea-group { margin-bottom:16px; }
+  .subtarea-group-title {
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em;
+    color:var(--gris); margin-bottom:10px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .subtarea {
+    display:flex; align-items:flex-start; gap:10px;
+    padding:8px 10px; border-radius:8px; cursor:pointer;
+    transition:background 0.15s; margin-bottom:4px;
+    border:1px solid transparent;
+  }
+  .subtarea:hover { background:var(--crema); }
+  .subtarea.done { opacity:0.55; }
+  .subtarea.done .subtarea-text { text-decoration:line-through; color:var(--gris); }
+  .subtarea-check {
+    width:18px; height:18px; border-radius:5px; border:2px solid var(--crema-oscura);
+    background:white; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s; margin-top:1px;
+  }
+  .subtarea.done .subtarea-check {
+    border-color:var(--verde); background:var(--verde);
+    color:white; font-size:10px; font-weight:700;
+  }
+  .subtarea-text { font-size:13px; line-height:1.45; flex:1; }
+
+  /* ── NOTAS ── */
+  .notas-section { padding:4px 24px 20px; }
+  .notas-label {
+    font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em;
+    color:var(--gris); margin-bottom:6px;
+  }
+  textarea.notas-box {
+    width:100%; min-height:72px; padding:10px 14px;
+    border:1px solid var(--crema-oscura); border-radius:8px;
+    background:var(--crema); font-size:12px; font-family:'Inter',sans-serif;
+    color:var(--texto); resize:vertical; line-height:1.5;
+    transition:border 0.2s;
+  }
+  textarea.notas-box:focus { outline:none; border-color:var(--verde-claro); background:white; }
+
+  /* ── RESPONSABLE / FECHA ── */
+  .meta-row {
+    display:flex; gap:12px; padding:0 24px 20px; flex-wrap:wrap;
+  }
+  .meta-field { display:flex; flex-direction:column; gap:4px; flex:1; min-width:160px; }
+  .meta-field label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--gris); }
+  .meta-field input {
+    padding:7px 12px; border:1px solid var(--crema-oscura); border-radius:8px;
+    background:var(--crema); font-size:12px; font-family:'Inter',sans-serif;
+    color:var(--texto); transition:border 0.2s;
+  }
+  .meta-field input:focus { outline:none; border-color:var(--verde-claro); background:white; }
+
+  /* ── COMPROMISOS ── */
+  .compromisos-card {
+    background:var(--verde-oscuro); border-radius:16px; padding:24px 28px;
+    margin-bottom:20px; color:white;
+  }
+  .compromisos-card h3 {
+    font-family:'Playfair Display',serif; font-size:17px; margin-bottom:6px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .compromisos-card p { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:16px; }
+  .compromisos-list { display:flex; flex-direction:column; gap:8px; }
+  .compromiso-item {
+    display:flex; align-items:flex-start; gap:10px;
+    background:rgba(255,255,255,0.07); border-radius:8px; padding:10px 14px;
+    cursor:pointer; transition:background 0.2s; border:1px solid rgba(255,255,255,0.08);
+  }
+  .compromiso-item:hover { background:rgba(255,255,255,0.12); }
+  .compromiso-item.done { opacity:0.5; }
+  .compromiso-item.done .comp-text { text-decoration:line-through; }
+  .comp-check {
+    width:16px; height:16px; border-radius:4px; border:2px solid rgba(255,255,255,0.3);
+    flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-size:9px; color:white; margin-top:1px; transition:all 0.2s;
+  }
+  .compromiso-item.done .comp-check { background:var(--verde-claro); border-color:var(--verde-claro); color:var(--verde-oscuro); }
+  .comp-text { font-size:12px; line-height:1.4; flex:1; }
+  .comp-add {
+    display:flex; gap:8px; margin-top:12px;
+  }
+  .comp-input {
+    flex:1; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2);
+    background:rgba(255,255,255,0.08); color:white; font-size:12px; font-family:'Inter',sans-serif;
+  }
+  .comp-input::placeholder { color:rgba(255,255,255,0.35); }
+  .comp-input:focus { outline:none; border-color:var(--verde-claro); }
+  .comp-btn {
+    padding:8px 16px; background:var(--verde-claro); color:var(--verde-oscuro);
+    border:none; border-radius:8px; font-size:12px; font-weight:700;
+    cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s;
+  }
+  .comp-btn:hover { background:#c9e07a; }
+
+  /* ── SESION TABS ── */
+  .sesion-tag {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 10px; border-radius:12px; font-size:10px; font-weight:600;
+    margin-right:6px; margin-bottom:4px;
+  }
+  .tag-s2 { background:#dbeafe; color:#1e40af; }
+  .tag-s3 { background:#dcfce7; color:#166534; }
+  .tag-s4 { background:#fef9c3; color:#92400e; }
+  .tag-s5 { background:#ede9fe; color:#5b21b6; }
+
+  /* ── RESUMEN TAB ── */
+  .resumen-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px;
+  }
+  .resumen-stat {
+    background:white; border-radius:12px; padding:18px;
+    text-align:center; border:1px solid rgba(0,0,0,0.07);
+  }
+  .resumen-stat .stat-val {
+    font-family:'Playfair Display',serif; font-size:28px; font-weight:700;
+    color:var(--verde-oscuro); margin-bottom:4px;
+  }
+  .resumen-stat .stat-lbl { font-size:11px; color:var(--gris); }
+
+  .timeline-card {
+    background:white; border-radius:12px; padding:20px 24px;
+    border:1px solid rgba(0,0,0,0.07); margin-bottom:14px;
+  }
+  .timeline-card h4 {
+    font-family:'Playfair Display',serif; font-size:15px; color:var(--verde-oscuro);
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
+  }
+  .timeline-row {
+    display:flex; align-items:center; gap:12px;
+    padding:8px 0; border-bottom:1px solid var(--crema-oscura);
+  }
+  .timeline-row:last-child { border-bottom:none; }
+  .timeline-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .timeline-text { font-size:12px; color:var(--texto); flex:1; }
+  .timeline-sesion { font-size:10px; color:var(--gris); }
+
+  /* ── TOOLTIP NAV ── */
+  .nav-top {
+    display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap;
+  }
+  .nav-link {
+    padding:6px 14px; background:white; border:1px solid var(--crema-oscura);
+    border-radius:8px; font-size:11px; color:var(--verde-oscuro);
+    text-decoration:none; font-weight:500; transition:all 0.2s;
+  }
+  .nav-link:hover { background:var(--verde-oscuro); color:white; border-color:var(--verde-oscuro); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background:var(--verde-oscuro); color:rgba(255,255,255,0.5);
+    padding:18px 40px; display:flex; justify-content:space-between;
+    align-items:center; font-size:11px; margin-top:40px;
+  }
+  .footer-brand { font-family:'Playfair Display',serif; color:white; font-size:13px; }
+
+  /* ── MODAL CELEBRACIÓN ── */
+  .modal-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.5); z-index:200;
+    align-items:center; justify-content:center;
+  }
+  .modal-overlay.show { display:flex; }
+  .modal-box {
+    background:white; border-radius:20px; padding:40px 36px;
+    text-align:center; max-width:400px; width:90%;
+    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  }
+  .modal-box .modal-icon { font-size:52px; margin-bottom:16px; }
+  .modal-box h3 { font-family:'Playfair Display',serif; font-size:22px; color:var(--verde-oscuro); margin-bottom:8px; }
+  .modal-box p { font-size:13px; color:var(--gris); margin-bottom:24px; line-height:1.6; }
+  .modal-close {
+    background:var(--verde-oscuro); color:white; border:none;
+    padding:10px 28px; border-radius:10px; font-size:13px; font-weight:600;
+    cursor:pointer; font-family:'Inter',sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <span class="brand-name">Simoné — Arte y Naturaleza</span>
+    </div>
+    <div class="header-badges">
+      <span class="badge">Sesión 2 → 8</span>
+      <span class="badge">Plan de Acción</span>
+      <span class="badge">EBV™</span>
+    </div>
+  </div>
+  <div class="header-content">
+    <h1>Plan de Acción Estratégico</h1>
+    <p>Compromisos y tareas que surgen del Diagnóstico Operativo · Seguimiento sesión a sesión</p>
+  </div>
+</div>
+
+<!-- ── PROGRESS GLOBAL ── -->
+<div class="progress-bar-global">
+  <span class="prog-label">Progreso general del plan</span>
+  <div class="prog-track"><div class="prog-fill" id="globalFill" style="width:0%"></div></div>
+  <span class="prog-pct" id="globalPct">0%</span>
+</div>
+
+<!-- ── SAVE INDICATOR ── -->
+<div class="save-indicator">
+  <div class="save-badge">
+    <div class="save-dot" id="saveDot"></div>
+    <span id="saveLabel">Auto-guardado activo</span>
+  </div>
+  <button class="btn-reiniciar" onclick="confirmarReinicio()">↺ Reiniciar</button>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- NAV LINKS -->
+  <div class="nav-top">
+    <a href="Sesion 2 - Checklist de trabajo.html" class="nav-link">← Checklist Sesión 2</a>
+    <a href="Sesion 2 - Diagnostico Operativo.html" class="nav-link">📊 Diagnóstico Operativo</a>
+    <a href="Sesion 2 - Informe Diagnostico Operativo.html" class="nav-link">📄 Informe Diagnóstico</a>
+    <a href="../Sesion 3/Sesion 3 - Auditoria LinkedIn Nathalia.html" class="nav-link">→ Auditoría LinkedIn S3</a>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('acciones')">🎯 3 Acciones Prioritarias</button>
+    <button class="tab-btn" onclick="showTab('compromisos')">✅ Compromisos de Sesión</button>
+    <button class="tab-btn" onclick="showTab('resumen')">📈 Resumen y Timeline</button>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- TAB 1: ACCIONES PRIORITARIAS -->
+  <!-- ════════════════════════════════════ -->
+  <div id="tab-acciones" class="tab-content active">
+
+    <!-- ACCIÓN 1 -->
+    <div class="accion-card">
+      <div class="accion-header">
+        <div class="accion-num" style="background:var(--a1)">1</div>
+        <div class="accion-info">
+          <div class="accion-title">Organizar Micelio + Sistema de Comunicaciones</div>
+          <div class="accion-desc">Estructurar el Paquete Micelio como embudo de entrada y definir el sistema de creación de contenido: quién, qué, cuándo y con qué herramientas.</div>
+          <div style="margin-top:8px;">
+            <span class="sesion-tag tag-s2">Sesión 2</span>
+            <span class="sesion-tag tag-s3">Sesión 3</span>
+            <span class="sesion-tag tag-s4">Sesión 4</span>
+          </div>
+        </div>
+        <div class="accion-status-wrap">
+          <select class="status-select" id="status-a1" onchange="save()">
+            <option value="pendiente">⏳ Pendiente</option>
+            <option value="en-curso">🔄 En curso</option>
+            <option value="completado">✅ Completado</option>
+          </select>
+          <div class="accion-progress-mini">
+            <div class="accion-progress-fill" id="prog-a1" style="background:var(--a1); width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtareas">
+        <div class="subtarea-group">
+          <div class="subtarea-group-title">📦 Paquete Micelio</div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir qué incluye el Paquete Micelio (servicios, duración, precio de entrada)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Diseñar la propuesta visual / one-pager del Paquete Micelio</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir precio del Paquete Micelio alineado con la estructura financiera acordada</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Crear landing o ficha de venta del Paquete Micelio</span>
+          </div>
+        </div>
+        <div class="subtarea-group">
+          <div class="subtarea-group-title">📢 Sistema de Creación de Contenido</div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Mapear los pilares de contenido de Simoné (EBV™, experiencias, metodología, casos)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir quién ejecuta el contenido: Nathalia, aliado o externalizado</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Crear calendario editorial básico (frecuencia, canales, formatos)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Activar LinkedIn como canal B2B principal (conectar con auditoría S3)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir plantillas de contenido para reducir tiempo de producción</span>
+          </div>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-field">
+          <label>Responsable principal</label>
+          <input type="text" id="resp-a1" placeholder="Ej: Nathalia + equipo" oninput="save()">
+        </div>
+        <div class="meta-field">
+          <label>Fecha límite</label>
+          <input type="date" id="fecha-a1" oninput="save()">
+        </div>
+        <div class="meta-field">
+          <label>Sesión de revisión</label>
+          <input type="text" id="sesrev-a1" placeholder="Ej: Sesión 4" oninput="save()">
+        </div>
+      </div>
+      <div class="notas-section">
+        <div class="notas-label">Notas y acuerdos</div>
+        <textarea class="notas-box" id="notas-a1" placeholder="Acuerdos, observaciones, próximos pasos específicos..." oninput="save()"></textarea>
+      </div>
+    </div>
+
+    <!-- ACCIÓN 2 -->
+    <div class="accion-card">
+      <div class="accion-header">
+        <div class="accion-num" style="background:var(--a2)">2</div>
+        <div class="accion-info">
+          <div class="accion-title">Activar Proceso Comercial — Prospección</div>
+          <div class="accion-desc">Definir el proceso de prospección B2B: guión de llamada, cadencia de contacto y CRM básico. El CEO debe dejar de ejecutar comercial sin sistema.</div>
+          <div style="margin-top:8px;">
+            <span class="sesion-tag tag-s2">Sesión 2</span>
+            <span class="sesion-tag tag-s4">Sesión 4</span>
+          </div>
+        </div>
+        <div class="accion-status-wrap">
+          <select class="status-select" id="status-a2" onchange="save()">
+            <option value="pendiente">⏳ Pendiente</option>
+            <option value="en-curso">🔄 En curso</option>
+            <option value="completado">✅ Completado</option>
+          </select>
+          <div class="accion-progress-mini">
+            <div class="accion-progress-fill" id="prog-a2" style="background:var(--a2); width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtareas">
+        <div class="subtarea-group">
+          <div class="subtarea-group-title">📞 Proceso de Llamadas y Citas</div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir el perfil del cliente ideal B2B (sector, tamaño, cargo decisor)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Escribir el guión de primer contacto (llamada o mensaje de LinkedIn)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Establecer cadencia: cuántos contactos por semana y en qué canales</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Activar Paso CERO: contenido que genera citas antes de llamar</span>
+          </div>
+        </div>
+        <div class="subtarea-group">
+          <div class="subtarea-group-title">🗂 CRM y Seguimiento</div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Elegir herramienta de CRM básica (Notion, Trello, Airtable u otra)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Crear pipeline de ventas con etapas: Contacto → Cita → Propuesta → Cierre</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir protocolo de seguimiento post-cita (correo, WhatsApp, tiempo)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Meta: 3 citas B2B activas para la próxima sesión</span>
+          </div>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-field">
+          <label>Responsable principal</label>
+          <input type="text" id="resp-a2" placeholder="Ej: Nathalia" oninput="save()">
+        </div>
+        <div class="meta-field">
+          <label>Fecha límite</label>
+          <input type="date" id="fecha-a2" oninput="save()">
+        </div>
+        <div class="meta-field">
+          <label>Sesión de revisión</label>
+          <input type="text" id="sesrev-a2" placeholder="Ej: Sesión 4" oninput="save()">
+        </div>
+      </div>
+      <div class="notas-section">
+        <div class="notas-label">Notas y acuerdos</div>
+        <textarea class="notas-box" id="notas-a2" placeholder="Acuerdos, observaciones, próximos pasos específicos..." oninput="save()"></textarea>
+      </div>
+    </div>
+
+    <!-- ACCIÓN 3 -->
+    <div class="accion-card">
+      <div class="accion-header">
+        <div class="accion-num" style="background:var(--a3)">3</div>
+        <div class="accion-info">
+          <div class="accion-title">Encuestas de Satisfacción + Piezas Finales de Servicio</div>
+          <div class="accion-desc">Crear sistema de retroalimentación post-servicio que genere testimonios, casos de éxito y material de divulgación de forma orgánica y sistemática.</div>
+          <div style="margin-top:8px;">
+            <span class="sesion-tag tag-s3">Sesión 3</span>
+            <span class="sesion-tag tag-s5">Sesión 5</span>
+          </div>
+        </div>
+        <div class="accion-status-wrap">
+          <select class="status-select" id="status-a3" onchange="save()">
+            <option value="pendiente">⏳ Pendiente</option>
+            <option value="en-curso">🔄 En curso</option>
+            <option value="completado">✅ Completado</option>
+          </select>
+          <div class="accion-progress-mini">
+            <div class="accion-progress-fill" id="prog-a3" style="background:var(--a3); width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtareas">
+        <div class="subtarea-group">
+          <div class="subtarea-group-title">📋 Sistema de Retroalimentación</div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Diseñar encuesta de satisfacción post-servicio (máx. 5 preguntas)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir el momento y canal para enviar la encuesta (24–48h post-taller)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Crear flujo de solicitud de testimonio desde la respuesta de la encuesta</span>
+          </div>
+        </div>
+        <div class="subtarea-group">
+          <div class="subtarea-group-title">🎬 Piezas de Divulgación</div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Definir qué piezas se producen al final de cada servicio (foto, video, carta)</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Crear plantilla de "Caso de éxito" para publicar en LinkedIn</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Conectar divulgación con el paso 8 de la Ruta de Servicio</span>
+          </div>
+          <div class="subtarea" onclick="toggleTask(this)">
+            <div class="subtarea-check"></div>
+            <span class="subtarea-text">Banco de testimonios: formato estándar para capturar y publicar</span>
+          </div>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-field">
+          <label>Responsable principal</label>
+          <input type="text" id="resp-a3" placeholder="Ej: Nathalia + Comunicaciones" oninput="save()">
+        </div>
+        <div class="meta-field">
+          <label>Fecha límite</label>
+          <input type="date" id="fecha-a3" oninput="save()">
+        </div>
+        <div class="meta-field">
+          <label>Sesión de revisión</label>
+          <input type="text" id="sesrev-a3" placeholder="Ej: Sesión 5" oninput="save()">
+        </div>
+      </div>
+      <div class="notas-section">
+        <div class="notas-label">Notas y acuerdos</div>
+        <textarea class="notas-box" id="notas-a3" placeholder="Acuerdos, observaciones, próximos pasos específicos..." oninput="save()"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /tab-acciones -->
+
+  <!-- ════════════════════════════════════ -->
+  <!-- TAB 2: COMPROMISOS DE SESIÓN -->
+  <!-- ════════════════════════════════════ -->
+  <div id="tab-compromisos" class="tab-content">
+
+    <div class="compromisos-card">
+      <h3>🤝 Compromisos de Sesión 2</h3>
+      <p>Tareas puntuales acordadas en esta sesión — a resolver antes de la próxima</p>
+      <div class="compromisos-list" id="compList">
+        <div class="compromiso-item" onclick="toggleComp(this)">
+          <div class="comp-check">✓</div>
+          <span class="comp-text">Organizar y revisar el Paquete Micelio antes de la Sesión 3</span>
+        </div>
+        <div class="compromiso-item" onclick="toggleComp(this)">
+          <div class="comp-check">✓</div>
+          <span class="comp-text">Actualizar perfil de LinkedIn de Nathalia (preparar para auditoría S3)</span>
+        </div>
+        <div class="compromiso-item" onclick="toggleComp(this)">
+          <div class="comp-check">✓</div>
+          <span class="comp-text">Revisar precios de talleres corporativos — propuesta de ajuste</span>
+        </div>
+        <div class="compromiso-item" onclick="toggleComp(this)">
+          <div class="comp-check">✓</div>
+          <span class="comp-text">Crear 3 contactos nuevos en pipeline comercial</span>
+        </div>
+        <div class="compromiso-item" onclick="toggleComp(this)">
+          <div class="comp-check">✓</div>
+          <span class="comp-text">Definir herramienta de CRM a usar</span>
+        </div>
+      </div>
+      <div class="comp-add">
+        <input type="text" class="comp-input" id="newComp" placeholder="Agregar nuevo compromiso..." onkeydown="if(event.key==='Enter')addComp()">
+        <button class="comp-btn" onclick="addComp()">+ Agregar</button>
+      </div>
+    </div>
+
+    <div class="accion-card">
+      <div class="accion-header" style="border-bottom:none;">
+        <div style="flex:1;">
+          <div class="accion-title" style="font-size:15px;">📝 Notas generales de sesión</div>
+          <div class="accion-desc">Observaciones, ideas sueltas, temas pendientes para las próximas sesiones</div>
+        </div>
+      </div>
+      <div class="notas-section" style="padding-top:0;">
+        <textarea class="notas-box" id="notas-generales" style="min-height:140px;"
+          placeholder="Ej: Nathalia mencionó que le interesa explorar alianzas con nuevas empresas. Revisar en S4. El diferenciador de EBV™ debe comunicarse más en las propuestas..." oninput="save()"></textarea>
+      </div>
+    </div>
+
+    <div class="accion-card">
+      <div class="accion-header" style="border-bottom:none;">
+        <div style="flex:1;">
+          <div class="accion-title" style="font-size:15px;">🌱 Semillas para próximas sesiones</div>
+          <div class="accion-desc">Temas que surgieron y deben retomarse en sesiones futuras</div>
+        </div>
+      </div>
+      <div class="notas-section" style="padding-top:0;">
+        <textarea class="notas-box" id="notas-semillas" style="min-height:120px;"
+          placeholder="S3: LinkedIn audit — activar EBV™ como eje narrativo&#10;S4: Diseñar embudo Micelio completo&#10;S5: Estructura de precios 2026..." oninput="save()"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /tab-compromisos -->
+
+  <!-- ════════════════════════════════════ -->
+  <!-- TAB 3: RESUMEN Y TIMELINE -->
+  <!-- ════════════════════════════════════ -->
+  <div id="tab-resumen" class="tab-content">
+
+    <div class="resumen-grid">
+      <div class="resumen-stat">
+        <div class="stat-val" id="res-total">0</div>
+        <div class="stat-lbl">Tareas totales</div>
+      </div>
+      <div class="resumen-stat">
+        <div class="stat-val" id="res-done">0</div>
+        <div class="stat-lbl">Completadas</div>
+      </div>
+      <div class="resumen-stat">
+        <div class="stat-val" id="res-pct">0%</div>
+        <div class="stat-lbl">Progreso general</div>
+      </div>
+    </div>
+
+    <div class="timeline-card">
+      <h4>🗓 Timeline del Acompañamiento</h4>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:#94a3b8"></div>
+        <span class="timeline-text"><strong>Sesión 1</strong> — Kick-off y alineación estratégica</span>
+        <span class="timeline-sesion tag-s2" style="padding:2px 8px; border-radius:8px; font-size:10px; background:#f1f5f9; color:#64748b;">Completada</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:var(--a1)"></div>
+        <span class="timeline-text"><strong>Sesión 2</strong> — Diagnóstico Operativo · <em>Plan de acción activo</em></span>
+        <span class="sesion-tag tag-s2" style="margin:0; font-size:10px;">En curso</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:var(--verde-claro)"></div>
+        <span class="timeline-text"><strong>Sesión 3</strong> — Auditoría LinkedIn y posicionamiento B2B</span>
+        <span class="sesion-tag tag-s3" style="margin:0; font-size:10px;">Próxima</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:#e2e8f0"></div>
+        <span class="timeline-text"><strong>Sesión 4</strong> — Embudos de venta y Paquete Micelio</span>
+        <span style="font-size:10px; color:#94a3b8;">Pendiente</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:#e2e8f0"></div>
+        <span class="timeline-text"><strong>Sesión 5</strong> — Estructura de precios y propuesta de valor</span>
+        <span style="font-size:10px; color:#94a3b8;">Pendiente</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:#e2e8f0"></div>
+        <span class="timeline-text"><strong>Sesión 6</strong> — Comunicaciones y sistema de contenido</span>
+        <span style="font-size:10px; color:#94a3b8;">Pendiente</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:#e2e8f0"></div>
+        <span class="timeline-text"><strong>Sesión 7</strong> — KPIs y métricas del negocio</span>
+        <span style="font-size:10px; color:#94a3b8;">Pendiente</span>
+      </div>
+      <div class="timeline-row" style="border-bottom:none;">
+        <div class="timeline-dot" style="background:#e2e8f0"></div>
+        <span class="timeline-text"><strong>Sesión 8</strong> — Cierre y plan de vuelo independiente</span>
+        <span style="font-size:10px; color:#94a3b8;">Pendiente</span>
+      </div>
+    </div>
+
+    <div class="timeline-card">
+      <h4>🔑 Top hallazgos que guían el plan</h4>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:var(--a1)"></div>
+        <span class="timeline-text"><strong>Cuello de botella:</strong> Comunicaciones y creación de contenido no estructurada</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:var(--a2)"></div>
+        <span class="timeline-text"><strong>CEO sobrecargado:</strong> Gestión Comercial (+10h/sem) sin proceso definido → DELEGAR</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:var(--a3)"></div>
+        <span class="timeline-text"><strong>Sub-cotización:</strong> 4 de 5 servicios por debajo del valor real — talleres el más urgente</span>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot" style="background:var(--verde-claro)"></div>
+        <span class="timeline-text"><strong>Diferenciador no comunicado:</strong> EL BORDE VISIBLE™ genera confianza B2B pero no aparece en la oferta</span>
+      </div>
+      <div class="timeline-row" style="border-bottom:none;">
+        <div class="timeline-dot" style="background:#f59e0b"></div>
+        <span class="timeline-text"><strong>Oportunidad:</strong> Posproducción automatizable — recuperar tiempo del CEO</span>
+      </div>
+    </div>
+
+  </div><!-- /tab-resumen -->
+
+</div><!-- /main -->
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-brand">Simoné — Arte y Naturaleza</div>
+  <div>Plan de Acción · Sesión 2 → 8 · EL BORDE VISIBLE™</div>
+  <div>Auto-guardado activado</div>
+</div>
+
+<!-- ── MODAL CELEBRACIÓN ── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-icon">🎉</div>
+    <h3>¡Plan completado!</h3>
+    <p>Todas las tareas del plan de acción están listas. Simoné está lista para el siguiente nivel.</p>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">Continuar →</button>
+  </div>
+</div>
+
+<script>
+const SAVE_KEY = 'simone_plan_accion_v1';
+
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function toggleTask(el) {
+  el.classList.toggle('done');
+  el.querySelector('.subtarea-check').textContent = el.classList.contains('done') ? '✓' : '';
+  updateProgress();
+  save();
+}
+
+function toggleComp(el) {
+  el.classList.toggle('done');
+  save();
+}
+
+function addComp() {
+  const input = document.getElementById('newComp');
+  const text = input.value.trim();
+  if (!text) return;
+  const item = document.createElement('div');
+  item.className = 'compromiso-item';
+  item.onclick = function(){ toggleComp(this); };
+  item.innerHTML = `<div class="comp-check">✓</div><span class="comp-text">${text}</span>`;
+  document.getElementById('compList').appendChild(item);
+  input.value = '';
+  save();
+}
+
+function updateProgress() {
+  const cards = [
+    { tasks: document.querySelectorAll('#tab-acciones .accion-card:nth-child(1) .subtarea'), fill: 'prog-a1' },
+    { tasks: document.querySelectorAll('#tab-acciones .accion-card:nth-child(2) .subtarea'), fill: 'prog-a2' },
+    { tasks: document.querySelectorAll('#tab-acciones .accion-card:nth-child(3) .subtarea'), fill: 'prog-a3' },
+  ];
+
+  let totalAll = 0, doneAll = 0;
+
+  cards.forEach(c => {
+    const total = c.tasks.length;
+    const done = Array.from(c.tasks).filter(t => t.classList.contains('done')).length;
+    totalAll += total; doneAll += done;
+    const pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById(c.fill).style.width = pct + '%';
+  });
+
+  const globalPct = totalAll ? Math.round(doneAll/totalAll*100) : 0;
+  document.getElementById('globalFill').style.width = globalPct + '%';
+  document.getElementById('globalPct').textContent = globalPct + '%';
+  document.getElementById('res-total').textContent = totalAll;
+  document.getElementById('res-done').textContent = doneAll;
+  document.getElementById('res-pct').textContent = globalPct + '%';
+
+  if (globalPct === 100 && totalAll > 0) {
+    document.getElementById('modal').classList.add('show');
+  }
+}
+
+/* ── AUTO SAVE ── */
+function save() {
+  updateProgress();
+  const state = {
+    tasks: [],
+    comps: [],
+    statuses: {
+      a1: document.getElementById('status-a1').value,
+      a2: document.getElementById('status-a2').value,
+      a3: document.getElementById('status-a3').value,
+    },
+    metas: {
+      resp_a1: document.getElementById('resp-a1').value,
+      fecha_a1: document.getElementById('fecha-a1').value,
+      sesrev_a1: document.getElementById('sesrev-a1').value,
+      resp_a2: document.getElementById('resp-a2').value,
+      fecha_a2: document.getElementById('fecha-a2').value,
+      sesrev_a2: document.getElementById('sesrev-a2').value,
+      resp_a3: document.getElementById('resp-a3').value,
+      fecha_a3: document.getElementById('fecha-a3').value,
+      sesrev_a3: document.getElementById('sesrev-a3').value,
+    },
+    notas: {
+      a1: document.getElementById('notas-a1').value,
+      a2: document.getElementById('notas-a2').value,
+      a3: document.getElementById('notas-a3').value,
+      generales: document.getElementById('notas-generales').value,
+      semillas: document.getElementById('notas-semillas').value,
+    },
+    compTexts: [],
+    compDone: [],
+  };
+
+  document.querySelectorAll('.subtarea').forEach((el,i) => {
+    state.tasks.push(el.classList.contains('done'));
+  });
+
+  document.querySelectorAll('.compromiso-item').forEach(el => {
+    state.compTexts.push(el.querySelector('.comp-text').textContent);
+    state.compDone.push(el.classList.contains('done'));
+  });
+
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    showSaved();
+  } catch(e) {}
+}
+
+function showSaved() {
+  const dot = document.getElementById('saveDot');
+  const lbl = document.getElementById('saveLabel');
+  dot.classList.add('saved');
+  lbl.textContent = '💾 Guardado · ' + new Date().toLocaleTimeString('es-CO', {hour:'2-digit',minute:'2-digit'});
+  setTimeout(() => {
+    dot.classList.remove('saved');
+    lbl.textContent = 'Auto-guardado activo';
+  }, 3000);
+}
+
+function load() {
+  const raw = localStorage.getItem(SAVE_KEY);
+  if (!raw) return;
+  try {
+    const state = JSON.parse(raw);
+    const tasks = document.querySelectorAll('.subtarea');
+    tasks.forEach((el,i) => {
+      if (state.tasks[i]) {
+        el.classList.add('done');
+        el.querySelector('.subtarea-check').textContent = '✓';
+      }
+    });
+
+    if (state.statuses) {
+      ['a1','a2','a3'].forEach(k => {
+        const el = document.getElementById('status-'+k);
+        if (el && state.statuses[k]) el.value = state.statuses[k];
+      });
+    }
+
+    if (state.metas) {
+      Object.entries(state.metas).forEach(([k,v]) => {
+        const el = document.getElementById(k.replace('_','-'));
+        if (el) el.value = v;
+      });
+    }
+
+    if (state.notas) {
+      ['a1','a2','a3','generales','semillas'].forEach(k => {
+        const el = document.getElementById('notas-' + k);
+        if (el && state.notas[k]) el.value = state.notas[k];
+      });
+    }
+
+    if (state.compTexts && state.compTexts.length) {
+      const list = document.getElementById('compList');
+      const existingItems = list.querySelectorAll('.compromiso-item');
+      // Update existing items
+      existingItems.forEach((item, i) => {
+        if (state.compTexts[i]) {
+          item.querySelector('.comp-text').textContent = state.compTexts[i];
+          if (state.compDone[i]) item.classList.add('done');
+        }
+      });
+      // Add extra items
+      for (let i = existingItems.length; i < state.compTexts.length; i++) {
+        const item = document.createElement('div');
+        item.className = 'compromiso-item' + (state.compDone[i] ? ' done' : '');
+        item.onclick = function(){ toggleComp(this); };
+        item.innerHTML = `<div class="comp-check">✓</div><span class="comp-text">${state.compTexts[i]}</span>`;
+        list.appendChild(item);
+      }
+    }
+
+    updateProgress();
+  } catch(e) {}
+}
+
+function confirmarReinicio() {
+  if (confirm('¿Reiniciar todo el plan? Se perderán todos los avances guardados.')) {
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
+  }
+}
+
+window.addEventListener('load', load);
+// Auto-save cada 30 segundos
+setInterval(save, 30000);
+</script>
+
+</body>
+</html>
